@@ -1,88 +1,49 @@
-<!DOCTYPE html>
 <html>
-<title>Twiddydinkies</title>
-<body>
+  <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.1/p5.js"></script>
 
-<h1>Twiddydinkies</h1>
-<p>Playing on GitHub...</p>
-  
-  <h2>HTML</h2>
-  <h3>PWA model</h3>
-  <pre>
-   &lt;meta http-equiv="X-UA-Compatible" content="IE=edge"&gt;
-   &lt;meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"&gt;
-
-   &lt;link rel="manifest" href="manifest.json"&gt;
-
-   &lt;!-- Add to home screen for Safari on iOS --&gt;
-   &lt;meta name="apple-mobile-web-app-capable" content="yes"&gt;
-   &lt;meta name="apple-mobile-web-app-status-bar-style" content="black"&gt;
-   &lt;meta name="apple-mobile-web-app-title" content="App"&gt;
-
-   &lt;link rel="apple-touch-icon" href="img/icons/app.gif"&gt;
-
-   &lt;meta name="msapplication-TileImage" content="img/icons/app.gif"&gt;
-   &lt;meta name="msapplication-TileColor" content="#2F3BA2"&gt;
-
-   &lt;link rel="shortcut icon" type="image/x-icon" href="favicon.ico"&gt;
-  </pre>
-  
-  <h2>JS</h2>
-  <h3>Game Design</h3>
-  <h4>Moving object template</h4>
-  <pre>
-    //Template
-    function Unit(m,x,y) {
-      this.mass = m;
-      this.position = createVector(x,y);
-      this.velocity = createVector(0,0);
-      this.acceleration = createVector(0,0);
-    }
-
-    // Newton's 2nd law: F = M * A
-    // or A = F / M
-    Unit.prototype.applyForce = function(force) {
-      var f = p5.Vector.div(force,this.mass);
-      this.acceleration.add(f);
-    };
-
-    Unit.prototype.update = function() {
-      // Velocity changes according to acceleration
-      this.velocity.add(this.acceleration);
-      // position changes by velocity
-      this.position.add(this.velocity);
-      // We must clear acceleration each frame
-      this.acceleration.mult(0);
-    };
-
-    Unit.prototype.display = function() {
-      stroke(0);
-      strokeWeight(2);
-      fill(255,127);
-      ellipse(this.position.x,this.position.y,this.mass*16,this.mass*16);
-    };
-
-    // Bounce off bottom of window
-    Unit.prototype.checkEdges = function() {
-      if (this.position.y > (height - this.mass*8)) {
-        // A little dampening when hitting the bottom
-        this.velocity.y *= -0.9;
-        this.position.y = (height - this.mass*8);
-      }
-    };
-  </pre>
-  
-  <h2>CSS</h2>
-  <h3>Canvas fullscreen</h3>
-  <pre>
-  body {
+    <style>
+  html,body {
     margin: 0;
     overflow: hidden;
     height: 100%;
     width: 100%;
     position: fixed;
   }
-  </pre>
+    </style>
+  </head>
+  <body>
 
-</body>
+    <script>
+    var num = 20;
+    var mx = [];
+    var my = [];
+
+    function setup() {
+        createCanvas(window.innerWidth, window.innerHeight);
+        noStroke();
+        fill(255, 153);
+        for (var i = 0; i < num; i++) {
+            mx.push(i);
+            my.push(i);
+        }
+    }
+
+    function draw() {
+        background("#333333"); 
+        
+        // Cycle through the array, using a different entry on each frame. 
+        // Using modulo (%) like this is faster than moving all the values over.
+        var which = frameCount % num;
+        mx[which] = mouseX;
+        my[which] = mouseY;
+        
+        for (var i = 0; i < num; i++) {
+            // which+1 is the smallest (the oldest in the array)
+            var index = (which+1 + i) % num;
+            ellipse(mx[index], my[index], i, i);
+        }
+    }
+    </script>
+  </body>
 </html>
