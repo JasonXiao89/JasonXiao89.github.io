@@ -1,0 +1,19 @@
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: databroadcast-deployment
+spec:
+  selector:
+    matchLabels:
+      app: databroadcast
+  replicas: 1 # tells deployment to run 2 pods matching the template
+  template:
+    metadata:
+      labels:
+        app: databroadcast
+    spec:
+      containers:
+      - name: databroadcast
+        image: xiaowj1989/databroadcast:latest
+        ports:
+        - containerPort: 3002
